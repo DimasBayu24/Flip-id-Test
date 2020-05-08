@@ -1,3 +1,5 @@
+// Transaction screen
+
 import React, {Component} from 'react';
 import {
   Text,
@@ -16,25 +18,26 @@ export default class TransactionScreen extends Component {
   state = {
     modalVisible: false,
     transaction: [],
-    filterText: 'URUTKAN ▽',
+    filterText: 'URUTKAN ▽', // filterText used for change the text of sort button
     searchKey: '',
   };
   setModalVisible = visible => {
     this.setState({modalVisible: visible});
   };
 
+  // Below are list of handle function for sort, search, and filtering.
+
   handleSearch = search => {
     const searchFiltered = this.state.transaction.filter(
       item => item.beneficiary_name === search,
     );
-    console.log('search ', search);
-
     this.setState({transaction: searchFiltered});
   };
 
   handleReset = () => {
     Axios.get('https://nextar.flip.id/frontend-test').then(result => {
       const transactionList = result.data;
+      // I changed the unique code to ascending number so i can map the data list
       const output = Object.keys(transactionList).map(function(key) {
         return transactionList[key];
       });
@@ -103,6 +106,7 @@ export default class TransactionScreen extends Component {
   render() {
     const filteredData = this.state.transaction.filter(item => {
       return (
+        //I put it to lowercase so search key did not need to match with the case of alphabet
         item.beneficiary_name.toLowerCase().indexOf(this.state.searchKey) >=
           0 ||
         item.beneficiary_bank.toLowerCase().indexOf(this.state.searchKey) >=
@@ -114,6 +118,7 @@ export default class TransactionScreen extends Component {
 
     return (
       <View
+        //style.modalOn is necessary to make the color outside the model goes grey if modal is opened
         style={[style.container, this.state.modalVisible ? style.modalOn : '']}>
         <StatusBar
           barStyle="dark-content"
@@ -163,6 +168,7 @@ export default class TransactionScreen extends Component {
                   item.status === 'SUCCESS' ? '' : {backgroundColor: '#FD6442'},
                 ]}
                 onPress={() =>
+                  //I send a needed data only as a param to detail screen, so fetch data is only happen in the transaction screen
                   this.props.navigation.navigate('Detail', {
                     id: item.id,
                     amount: item.amount,

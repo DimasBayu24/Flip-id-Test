@@ -1,3 +1,5 @@
+// Detail of transaction screen
+
 import React, {Component} from 'react';
 import {
   Text,
@@ -10,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default class DetailTransactionScreen extends Component {
+  //List of needed data that sent to detail screen from transaction screen
   id = this.props.navigation.getParam('id', '');
   amount = this.props.navigation.getParam('amount', '');
   unique_code = this.props.navigation.getParam('unique_code', '');
@@ -22,6 +25,7 @@ export default class DetailTransactionScreen extends Component {
 
   render() {
     return (
+      //then, i just put the necessary data to its place.
       <View style={style.container}>
         <StatusBar
           barStyle="dark-content"
